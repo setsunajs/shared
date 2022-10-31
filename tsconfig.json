@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "jsx": "preserve",
     "jsxFactory": "_jsx",
     "jsxFragmentFactory": "Fragment",
@@ -10,7 +13,8 @@
     "baseUrl": "./",
     "types": [
       "vitest",
-      "vitest/globals"
+      "vitest/globals",
+      "@types/testing-library__jest-dom"
     ],
     "resolveJsonModule": true,
     "allowJs": true,
@@ -21,11 +25,15 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "src/*": ["./src/*"]
+    }
   },
   "include": [
     "vitest",
     "vitest/globals",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "test/**/*.ts"
   ]
 }

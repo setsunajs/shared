@@ -1,22 +1,29 @@
 import { svgTags } from "./element"
 
-export function createElem(
-  tag: keyof HTMLElementTagNameMap,
+export type HtmlTags =
+  | keyof HTMLElementTagNameMap
+  | keyof SVGElementTagNameMap
+  | (string & {})
+
+export function createElem<T extends HtmlTags>(
+  tag: T,
   options?: ElementCreationOptions
-) {
-  return tag in svgTags
-    ? document.createElementNS("http://www.w3.org/2000/svg", tag)
-    : document.createElement(tag, options)
+): T extends keyof SVGElementTagNameMap ? SVGAElement : HTMLElement {
+  return (
+    tag in svgTags
+      ? document.createElementNS("http://www.w3.org/2000/svg", tag)
+      : document.createElement(tag, options)
+  ) as any
 }
 
 export function createTextElem(text: string) {
   return document.createTextNode(text)
 }
 
-export function insertElem<E extends Node>(
-  child: E,
-  parent: E,
-  anchor: E | null
+export function insertElem(
+  child: Node,
+  parent: Node,
+  anchor: Node | null = null
 ) {
   return parent.insertBefore(child, anchor)
 }
@@ -33,19 +40,23 @@ export function setElemText(el: Node, value: any) {
   return (el.textContent = value)
 }
 
-export function setAttr(el: HTMLElement, key: string, value: any) {
+export function getAttr(el: Element, key: string) {
+  return el.getAttribute(key)
+}
+
+export function setAttr(el: Element, key: string, value: any) {
   return key === "value"
     ? ((el as any).value = value)
     : el.setAttribute(key, value)
 }
 
-export function removeAttr(el: HTMLElement, key: string) {
+export function removeAttr(el: Element | SVGAElement, key: string) {
   return el.removeAttribute(key)
 }
 
 export function setEvent(
-  el: Node,
-  type: string,
+  el: Element,
+  type: keyof HTMLElementEventMap,
   event: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) {
@@ -53,8 +64,8 @@ export function setEvent(
 }
 
 export function removeEvent(
-  el: Node,
-  type: string,
+  el: HTMLElement | SVGAElement,
+  type: keyof HTMLElementEventMap,
   event: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) {

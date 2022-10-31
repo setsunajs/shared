@@ -3,7 +3,9 @@ export const resolveEventName = (name: string) => {
 }
 
 export function identityComponent(message: string) {
-  return () => console.error(message)
+  return () => {
+    throw message
+  }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element

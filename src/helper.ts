@@ -1,6 +1,6 @@
 // import { isObservable } from "@setsunajs/observable"
 import { getNextSibling } from "./dom"
-import { isFunction, isPlainObject } from "./type"
+import { isFunction, isObject, isPlainObject } from "./type"
 
 // export function resolveObservableState(value) {
 //   return isObservable(value)
@@ -10,38 +10,31 @@ import { isFunction, isPlainObject } from "./type"
 //     : undefined
 // }
 
-export function resolveNextNodes(el: HTMLElement, flag: string) {
+export function resolveNextNodes<E extends ChildNode>(el: E, flag: string) {
   const open: ChildNode[] = []
   const nextNodes: ChildNode[] = [el]
-  let next = getNextSibling(el)
-  while (next) {
+  let next: ChildNode | null = el
+  while ((next = getNextSibling(next))) {
     nextNodes.push(next)
 
-    if (next.nodeType != 8) {
-      next = getNextSibling(next)
-      continue
-    }
-
-    const content = next.textContent!.trim()
-    if (content === `/${flag}`) {
+    if (next.textContent && next.textContent.trim() === flag) {
       if (open.length === 0) {
         return nextNodes
       } else {
         open.pop()
       }
     }
-    next = getNextSibling(next)
   }
 }
 
-export function excludes<T extends Record<string, any>>(
-  source: T,
+export function excludes(
+  source: Record<string, any>,
   blackList: string[]
 ): Record<string, any> {
   return Object.keys(source).reduce((result, key) => {
     !blackList.includes(key) && (result[key] = source[key])
     return result
-  }, {} as Record<string, any>)
+  }, {} as any)
 }
 
 export function noop<T>(value: T): T {
@@ -55,12 +48,22 @@ export function noopError(error: unknown): never {
 export function def<T extends Object>(
   target: T,
   key: PropertyKey,
+  value: any
+): void
+export function def<T extends Object>(
+  target: T,
+  key: PropertyKey,
   options: PropertyDescriptor
+): void
+export function def<T extends Object>(
+  target: T,
+  key: PropertyKey,
+  options: any
 ) {
   Object.defineProperty(target, key, {
     enumerable: false,
     configurable: false,
-    ...options
+    ...(isObject(options) ? { value: options } : options)
   })
 }
 
