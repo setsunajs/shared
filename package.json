@@ -1,0 +1,45 @@
+{
+  "name": "@setsunajs/share",
+  "version": "0.1.2",
+  "description": "@Tool functions shared internally by `@setsuna`",
+  "keywords": [
+    "setsuna",
+    "@setsunajs/shared"
+  ],
+  "homepage": "https://github.com/setsunajs/shared#readme",
+  "bugs": {
+    "url": "https://github.com/setsunajs/shared/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setsunajs/shared.git"
+  },
+  "license": "MIT",
+  "author": "@顾弦笙/usagisah <1286791152@qq.com>",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./dist/share.js"
+    },
+    "./dist/*": "./dist/*"
+  },
+  "main": "index.js",
+  "module": "dist/shared.js",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "scripts": {
+    "format": "prettier -w src/**/*.ts",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.8",
+    "esbuild": "^0.15.12",
+    "prettier": "^2.7.1",
+    "prettier-config-usagisah": "^1.0.1",
+    "vite": "^3.2.1",
+    "vitest": "^0.24.3"
+  }
+}

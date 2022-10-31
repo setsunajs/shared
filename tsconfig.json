@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "lib": ["ESNext", "DOM"],
+    "jsx": "preserve",
+    "jsxFactory": "_jsx",
+    "jsxFragmentFactory": "Fragment",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "types": [
+      "vitest",
+      "vitest/globals"
+    ],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "importHelpers": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "vitest",
+    "vitest/globals",
+    "src/**/*.ts"
+  ]
+}
