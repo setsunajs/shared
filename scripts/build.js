@@ -1,23 +1,16 @@
 import minimist from "minimist"
-import path from "node:path"
 import chalk from "chalk"
-import { build } from "esbuild"
-import { readdir, rm } from "node:fs/promises"
+import { build as _build } from "esbuild"
+import { rm } from "node:fs/promises"
 import { execa } from "execa"
-import {
-  Extractor,
-  ExtractorConfig
-} from "@microsoft/api-extractor"
+import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
+import { print, success, resolve } from "./helper.js"
 
 const { mod = "prod" } = minimist(process.argv.slice(2))
 const PROD = mod === "prod"
 
-const cwd = process.cwd()
-const resolve = p => path.resolve(cwd, p)
-const print = s => console.log(chalk.yellow(s))
-const success = s => console.log(chalk.green(s))
 
-async function work() {
+async function build() {
   print("pre build...")
   await clean()
   success("pre build success")
@@ -27,12 +20,12 @@ async function work() {
   const working = []
 
   formats.forEach(format => {
-    working.push(build(createConfig({ format, prod: false })))
+    working.push(_build(createConfig({ format, prod: false })))
   })
 
   if (PROD) {
     formats.forEach(format => {
-      working.push(build(createConfig({ format, prod: true })))
+      working.push(_build(createConfig({ format, prod: true })))
     })
   }
 
@@ -99,13 +92,12 @@ async function buildType() {
   await rm(temp, { force: true, recursive: true })
 }
 
-work()
-  .then(() => success("\nbuild finalize"))
+build()
   .catch(err => {
     console.log()
     console.log()
     console.clear()
     console.log(chalk.red(`build failed: \n\n`), err)
     console.log()
-    process.exit(0)
   })
+  .finally(() => process.exit(0))
