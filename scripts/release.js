@@ -65,7 +65,7 @@ async function release() {
   print(`writing new version(${useVersion})...`)
   packages.version = useVersion
   await writeFile(
-    resolve("./packages.json"),
+    resolve("./package.json"),
     JSON.stringify(packages, null, "2"),
     "utf-8"
   )
