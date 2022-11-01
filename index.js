@@ -1,7 +1,7 @@
 "use strict"
 
 if (process.env.NODE_ENV === "production") {
-  module.exports = require("./dist/share.prod.cjs")
+  module.exports = require("./dist/shared.prod.cjs")
 } else {
-  module.exports = require("./dist/share.cjs")
+  module.exports = require("./dist/shared.cjs")
 }

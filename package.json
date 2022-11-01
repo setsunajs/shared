@@ -1,5 +1,5 @@
 {
-  "name": "@setsunajs/share",
+  "name": "@setsunajs/shared",
   "version": "0.1.2",
   "description": "@Tool functions shared internally by `@setsuna`",
   "keywords": [
@@ -16,32 +16,48 @@
   },
   "license": "MIT",
   "author": "@顾弦笙/usagisah <1286791152@qq.com>",
+  "type": "module",
   "exports": {
     ".": {
       "require": "./index.js",
-      "import": "./dist/share.js"
+      "import": "./dist/shared.js",
+      "types": "./dist/shared.d.ts"
     },
     "./dist/*": "./dist/*"
   },
   "main": "index.js",
+  "jsdelivr": "dist/shared.global.js",
+  "unpkg": "dist/shared.global.js",
   "module": "dist/shared.js",
+  "types": "dist/shared.d.ts",
   "files": [
     "index.js",
     "dist"
   ],
   "scripts": {
+    "build": "node scripts/build.js",
+    "coverage": "vitest run --coverage",
     "format": "prettier -w src/**/*.ts",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test": "vitest"
+  },
+  "dependencies": {
+    "chalk": "^5.1.2",
+    "inquirer": "^9.1.4",
+    "minimist": "^1.2.7"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.33.5",
     "@testing-library/jest-dom": "^5.16.5",
+    "@types/minimist": "^1.2.2",
     "@types/node": "^18.11.8",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "@vitest/coverage-c8": "^0.24.3",
     "esbuild": "^0.15.12",
+    "execa": "^6.1.0",
     "jsdom": "^20.0.2",
     "prettier": "^2.7.1",
     "prettier-config-usagisah": "^1.0.1",
+    "typescript": "^4.8.4",
     "vite": "^3.2.1",
     "vitest": "^0.24.3"
   }
