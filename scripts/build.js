@@ -54,7 +54,9 @@ function createConfig({ format, prod }) {
     charset: "utf8",
     incremental: false,
     format,
-    minify: prod
+    minify: prod,
+    target: "es2017",
+    treeShaking: true
   }
 }
 

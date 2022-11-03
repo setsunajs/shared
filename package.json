@@ -39,7 +39,8 @@
     "coverage": "vitest run --coverage",
     "format": "prettier -w src/**/*.ts",
     "release": "node ./scripts/release.js",
-    "test": "vitest"
+    "dev": "vitest dev",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.33.5",
@@ -63,5 +64,8 @@
     "typescript": "^4.8.4",
     "vite": "^3.2.1",
     "vitest": "^0.24.3"
+  },
+  "dependencies": {
+    "@setsunajs/observable": "^0.1.2"
   }
 }

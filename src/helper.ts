@@ -1,14 +1,14 @@
-// import { isObservable } from "@setsunajs/observable"
+import { isObservable, Observable } from "@setsunajs/observable"
 import { getNextSibling } from "./dom"
 import { isFunction, isObject, isPlainObject } from "./type"
 
-// export function resolveObservableState(value) {
-//   return isObservable(value)
-//     ? value
-//     : (isFunction(value) || isPlainObject(value)) && isObservable(value.input$)
-//     ? value.input$
-//     : undefined
-// }
+export function resolveObservableState(value: unknown): Observable<any> | undefined {
+  return isObservable(value)
+    ? value
+    : (isFunction(value) || isPlainObject(value)) && isObservable(value.input$)
+    ? value.input$
+    : undefined
+}
 
 export function resolveNextNodes<E extends ChildNode>(el: E, flag: string) {
   const open: ChildNode[] = []
@@ -29,10 +29,11 @@ export function resolveNextNodes<E extends ChildNode>(el: E, flag: string) {
 
 export function excludes(
   source: Record<string, any>,
-  blackList: string[]
+  filter: (key: string, value: any) => boolean
 ): Record<string, any> {
   return Object.keys(source).reduce((result, key) => {
-    !blackList.includes(key) && (result[key] = source[key])
+    const value = source[key]
+    !filter(key, value) && (result[key] = value)
     return result
   }, {} as any)
 }

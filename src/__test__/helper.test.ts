@@ -1,6 +1,13 @@
 import "@testing-library/jest-dom"
 import { createElem, insertElem } from "src/dom"
-import { BROWSER, def, excludes, noop, noopError, resolveNextNodes } from "src/helper"
+import {
+  BROWSER,
+  def,
+  excludes,
+  noop,
+  noopError,
+  resolveNextNodes
+} from "src/helper"
 
 describe("helper.ts", () => {
   it("resolveNextNodes()", () => {
@@ -21,7 +28,7 @@ describe("helper.ts", () => {
 
   it("excludes()", () => {
     const obj = { a: 1, b: 2, c: "a", d: "z" }
-    expect(excludes(obj, ["b", "d"])).toEqual({
+    expect(excludes(obj, key => ["b", "d"].includes(key))).toEqual({
       a: 1,
       c: "a"
     })

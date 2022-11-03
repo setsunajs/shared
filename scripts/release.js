@@ -66,7 +66,7 @@ async function release() {
   packages.version = useVersion
   await writeFile(
     resolve("./package.json"),
-    JSON.stringify(packages, null, "2"),
+    JSON.stringify(packages, null, 2),
     "utf-8"
   )
   success("write success")
