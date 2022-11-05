@@ -8,7 +8,7 @@ export type HtmlTags =
 export function createElem<T extends HtmlTags>(
   tag: T,
   options?: ElementCreationOptions
-): T extends keyof SVGElementTagNameMap ? SVGAElement : HTMLElement {
+): T extends keyof SVGElementTagNameMap ? SVGAElement : Element {
   return (
     tag in svgTags
       ? document.createElementNS("http://www.w3.org/2000/svg", tag)
@@ -56,7 +56,7 @@ export function removeAttr(el: Element | SVGAElement, key: string) {
 
 export function setEvent(
   el: Element,
-  type: keyof HTMLElementEventMap,
+  type: keyof HTMLElementEventMap | (string & {}),
   event: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) {
@@ -64,8 +64,8 @@ export function setEvent(
 }
 
 export function removeEvent(
-  el: HTMLElement | SVGAElement,
-  type: keyof HTMLElementEventMap,
+  el: Element | SVGAElement,
+  type: keyof HTMLElementEventMap | (string & {}),
   event: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) {

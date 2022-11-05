@@ -1,5 +1,5 @@
-export const resolveEventName = (name: string) => {
-  return name.startsWith("on") ? name.slice(2).toLocaleLowerCase() : name
+export const resolveJsxEventName = (name: string) => {
+  return name.startsWith("on") ? name.slice(2).toLocaleLowerCase() : null
 }
 
 export function identityComponent(message: string) {
