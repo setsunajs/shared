@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { identityComponent, resolveEventName } from "../element"
+import { identityComponent, resolveJsxEventName } from "../element"
 
 describe("element.ts", () => {
   it("resolveEventName()", () => {
@@ -10,9 +10,9 @@ describe("element.ts", () => {
     // fail
     const eventStr3 = "ONCLICK"
 
-    expect(resolveEventName(eventStr1)).toBe("click")
-    expect(resolveEventName(eventStr2)).toBe("click")
-    expect(resolveEventName(eventStr3)).not.toBe("click")
+    expect(resolveJsxEventName(eventStr1)).toBe("click")
+    expect(resolveJsxEventName(eventStr2)).toBe("click")
+    expect(resolveJsxEventName(eventStr3)).not.toBe("click")
   })
 
   it("identityComponent()", () => {

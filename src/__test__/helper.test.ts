@@ -4,9 +4,12 @@ import {
   BROWSER,
   def,
   excludes,
+  humpToTransverse,
+  humpToUnder,
   noop,
   noopError,
-  resolveNextNodes
+  resolveNextNodes,
+  underToHump
 } from "src/helper"
 
 describe("helper.ts", () => {
@@ -52,5 +55,17 @@ describe("helper.ts", () => {
 
   it("BROWSER", () => {
     expect(BROWSER).toBeTruthy()
+  })
+
+  it("humpToUnder()", () => {
+    expect(humpToUnder("textAlign")).toBe("text_align")
+  })
+
+  it("underToHump()", () => {
+    expect(underToHump("text_align")).toBe("textAlign")
+  })
+
+  it("humpToTransverse()", () => {
+    expect(humpToTransverse("textAlign")).toBe("text-align")
   })
 })

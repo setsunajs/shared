@@ -2,7 +2,9 @@ import { isObservable, Observable } from "@setsunajs/observable"
 import { getNextSibling } from "./dom"
 import { isFunction, isObject, isPlainObject } from "./type"
 
-export function resolveObservableState(value: unknown): Observable<any> | undefined {
+export function resolveObservableState(
+  value: unknown
+): Observable<any> | undefined {
   return isObservable(value)
     ? value
     : (isFunction(value) || isPlainObject(value)) && isObservable(value.input$)
@@ -69,3 +71,27 @@ export function def<T extends Object>(
 }
 
 export const BROWSER = typeof window
+
+/**
+ * hump to underline
+ * 驼峰转下划线
+ */
+export function humpToUnder(str: string) {
+  return str.replace(/[A-Z]/g, s => "_" + s.toLowerCase())
+}
+
+/**
+ * underline to hump
+ * 下划线转驼峰
+ */
+export function underToHump(str: string) {
+  return str.replace(/_(\w)/g, (_, s: string) => s.toUpperCase())
+}
+
+/**
+ * hump to transverse
+ * 驼峰转横杠
+ */
+export function humpToTransverse(str: string) {
+  return str.replace(/[A-Z]/g, s => "-" + s.toLowerCase())
+}
