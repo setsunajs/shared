@@ -5,43 +5,44 @@ import { rm } from "node:fs/promises"
 import { execa } from "execa"
 import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
 import { print, success, resolve } from "./helper.js"
+import { minify } from "terser"
+import { readFileSync, writeFileSync } from "node:fs"
 
 const { mod = "prod" } = minimist(process.argv.slice(2))
 const PROD = mod === "prod"
 
-
 async function build() {
   print("pre build...")
-  await clean()
+  await rm(resolve("./dist"), {
+    recursive: true,
+    force: true
+  })
   success("pre build success")
 
   print("start code build...")
-  const formats = ["esm", "iife", "cjs"]
-  const working = []
-
-  formats.forEach(format => {
-    working.push(_build(createConfig({ format, prod: false })))
-  })
-
+  const formats = ["esm", "cjs"]
+  await Promise.all(
+    formats.map(format => _build(createConfig({ format, prod: false })))
+  )
   if (PROD) {
-    formats.forEach(format => {
-      working.push(_build(createConfig({ format, prod: true })))
-    })
+    await Promise.all(formats.map(format => {
+      if (format === "esm") return Promise.resolve()
+      return _build(createConfig({ format, prod: true })).then(async () => {
+        const filePath = resolve(`./dist/shared${resolveFormatExt({ format, prod: true })}`)
+        const code = await minify(readFileSync(filePath, "utf-8"), {
+          ecma: "es2018",
+          module: true,
+          toplevel: false,
+        })
+        writeFileSync(filePath, code.code, "utf-8")
+      })
+    }))
   }
-
-  await Promise.all(working)
   success("code build success")
 
   print("start type build...")
   await buildType()
   success("type build success")
-}
-
-function clean() {
-  return rm(resolve("./dist"), {
-    recursive: true,
-    force: true
-  })
 }
 
 function createConfig({ format, prod }) {
@@ -54,8 +55,8 @@ function createConfig({ format, prod }) {
     charset: "utf8",
     incremental: false,
     format,
-    minify: prod,
-    target: "es2017",
+    minify: false,
+    target: "es2018",
     treeShaking: true
   }
 }
@@ -65,10 +66,6 @@ function resolveFormatExt({ format, prod }) {
 
   if (format === "cjs") {
     ext = "_.cjs"
-  }
-
-  if (format === "iife") {
-    ext = ".global_.js"
   }
 
   return ext.replace("_", prod ? ".prod" : "")
